@@ -155,7 +155,7 @@ public class jobalgorithm {
         reverse(stack);
         System.out.println(stack.pop()+" "+stack.pop()+" "+stack.pop());
         Queue<Integer> q=new LinkedList<Integer>();
-
+        //Sys
 
     }
 }
