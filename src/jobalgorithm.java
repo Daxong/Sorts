@@ -41,7 +41,7 @@ public class jobalgorithm {
     /**
      * 汉诺塔游戏 变更游戏规则：不能直接从左移到右反之亦是
      * 非递归解法
-     * @param args
+     * @param
      */
     public enum Action{
         /**
@@ -151,7 +151,8 @@ public class jobalgorithm {
      * 包括MaxTree树在内且在其中的每一颗子树上，值最大的节点都是树的头
      *    给定一个没有重复元素的数组arr，写出生成这个数组的MaxTree的函数，要求如果数组长度为N，
      *    则时间复杂度为O(N)，额外空间复杂度为O(N).
-     * @param args
+     *
+     * P24
      */
     class Node{
         public int value;
@@ -165,15 +166,20 @@ public class jobalgorithm {
 
     public Node getMaxTree(int[] arr){
         Node[] nArr = new Node[arr.length];
+        //将arr中值循环赋予nArr
         for(int i=0;i!= arr.length;i++){
             nArr[i] = new Node(arr[i]);
         }
         Stack<Node> stack= new Stack<>();
+
         HashMap<Node,Node> lBigMap = new HashMap<>();
         HashMap<Node,Node> rBigMao = new HashMap<>();
+        //178-188 求出每个数左边第一个比它大的数  使用map<key，value>存储，key为数 value为他左边第一个比它大的数
         for(int i=0;i!=nArr.length;i++){
             Node curNode=nArr[i];
             while(!stack.isEmpty() && stack.peek().value<curNode.value){
+                //不为空，且栈顶Node.value小于当前数组位置的值（栈中从顶到底要为升序，次位为顶位的左边第一个比它大的值）
+                //栈顶值比当前值小无法将当前值压入栈 当前栈中已经求出部分值的左边第一个比它的大的数  使用popStackSetMap方法进行处理
                 popStackSetMap(stack,lBigMap);
             }
             stack.push(curNode);
@@ -181,6 +187,7 @@ public class jobalgorithm {
         while(!stack.isEmpty()){
             popStackSetMap(stack,lBigMap);
         }
+        //
         for (int i=nArr.length-1;i != -1;i--){
             Node curNode = nArr[i];
             while(!stack.isEmpty() && stack.peek().value< curNode.value ){
@@ -191,53 +198,74 @@ public class jobalgorithm {
         while(!stack.isEmpty()){
             popStackSetMap(stack,rBigMao);
         }
+        /**
+         * 建树原则：
+         *  每一个数的父节点是它左边第一个比它大的数和它右边第一个比它大的数中，较小的那个
+         *  如果一个数左边没有比它大的数，右边也没有，就表明，这个数为headNode
+         */
         Node head=null;
         for (int i=0;i != nArr.length;i++){
             Node curNode = nArr[i];
             Node left = lBigMap.get(curNode);
             Node right = rBigMao.get(curNode);
-            if (,left == null && right == null){
+
+            if (left == null && right == null){
                 head = curNode;
             }else if(left==null){
                 if (right.left==null){
                     right.left=curNode;
+                    System.out.println(" "+right.value+"的左边为"+curNode.value);
                 }else{
                     right.right=curNode;
+                    System.out.println(" "+right.value+"的右边为"+curNode.value);
                 }
             }else if(right==null){
                 if (left.left==null){
                     left.left=curNode;
+                    System.out.println(" "+left.value+"的左边为"+curNode.value);
                 }else{
                     left.right=curNode;
+                    System.out.println(" "+left.value+"的右边为"+curNode.value);
                 }
             }else{
+                System.out.println(left.value+"    left左值： "+left.left);
+                System.out.println(left.value+"    left右值： "+left.right);
+                System.out.println(right.value+"    right左值： "+right.left);
+                System.out.println(right.value+"    right右值： "+right.right);
+
                 Node parent = left.value < right.value ? left:right;
+
                 if (parent.left == null){
                     parent.left = curNode;
+                    System.out.println(" "+parent.value+"的左边为"+curNode.value);
                 }else{
                     parent.right = curNode;
+                    System.out.println(" "+parent.value+"的右边为"+curNode.value);
                 }
             }
         }
         return head;
     }
+
+    /**
+     * 将Stack转化为map
+     * @param stack
+     * @param map
+     */
     public void popStackSetMap(Stack<Node> stack,HashMap<Node,Node> map){
+        //弹出栈顶Node，并赋予popNode
         Node popNode = stack.pop();
+
         if (stack.isEmpty()){
+            //如果栈为空，。。。。。。
             map.put(popNode,null);
         }else {
+            //否则将popNode和stack当前最顶Node作为键值对存入map
             map.put(popNode,stack.peek());
         }
     }
     public static void main(String args[]){
-        Stack<Integer> stack=new Stack<>();
-        stack.push(1);
-        stack.push(2);
-        stack.push(3);
-        reverse(stack);
-        System.out.println(stack.pop()+" "+stack.pop()+" "+stack.pop());
-        Queue<Integer> q=new LinkedList<Integer>();
-        //Sys
-
+        jobalgorithm job=new jobalgorithm();
+        job.getMaxTree(new int[]{1,3,2,4,9,6,5});
     }
 }
