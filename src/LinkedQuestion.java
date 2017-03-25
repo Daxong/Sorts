@@ -120,6 +120,35 @@ public class LinkedQuestion {
         return nodehead;
     }
 
+    /**
+     * 环形单链表的约瑟夫问题
+     * 输入：一个环形单向链表的头节点head和报数的值
+     * 返回：最后生存下来的节点，且这个节点自己组成环形单向链表，其他节点都删掉
+     */
+    public int getLive(int i,int m){
+        if(i ==1){
+            return 1;
+        }
+        //计算生存节点,找规律得出
+        return (getLive(i-1,m)+m-1)%i+1;
+    }
+    public MonoNode joesphusProblem(MonoNode head,int m){
+        if(head == null || head.next == head || m<1){
+            return head;
+        }
+        MonoNode cur = head.next;
+        int temp = 1;
+        while (cur!=head){
+            temp++;
+            cur = cur.next;
+        }
+        temp = getLive(temp,m);
+        while(--temp != 0){
+            head = head.next;
+        }
+        head.next = head;
+        return head;
+    }
 
 
     public static void main(String args[]){
@@ -127,11 +156,11 @@ public class LinkedQuestion {
         MonoNode node= list.new MonoNode(1);
         node.next=list.new MonoNode(2);
         node.next.next=list.new MonoNode(3);
-        MonoNode nodes= list.reversePart(node,1,2);
-        while(nodes !=null){
-            System.out.println(nodes.value);
-            nodes=nodes.next;
-        }
+        node.next.next.next=node;
+        MonoNode nodes= list.joesphusProblem(node,3);
+
+        System.out.print(nodes.value);
+
 
     }
 }
