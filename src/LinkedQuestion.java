@@ -95,9 +95,9 @@ public class LinkedQuestion {
         nodehead = (fPre == null ? head : fPre.next);
         //需反转的第二个节点
         MonoNode node2 = nodehead.next;
-        //？？？
+
         nodehead.next = tPos;
-        //新建节点 next=null  ？？？
+
         MonoNode next =null;
         //从node2开始  node2本身就是nodehead.next  nodehead为需反转的头节点
         while(node2 != tPos){/* 注意注意注意注意注意注意条件   node2代表头节点的下一个节点 如果下一个节点为tpos  则代表连接完成！！  */
@@ -150,16 +150,132 @@ public class LinkedQuestion {
         return head;
     }
 
+    /**
+     * 双链DNA中含有的两个结构相同、方向相反的序列称为回文结构，
+     * 每条单链以任一方向阅读时都与另一条链以相同方向阅读时的序列是一致的，例如5'GGTACC3' 3'CCATGG5'.
+     *
+     * 题：判断一个链表是否为会问结构
+     *  给定一个链表的头节点head，请判断该链表是否为回文结构
+     *  1-》2-》1 返回true
+     *  1-》2-》2-》1  返回true
+     *  1-》2-》3 返回false
+     *  要求，链表长度为N 时间复杂度为O(N) 额外空间复杂度达到O(1)
+     *
+     *  基本套路就是反转链表后半部分和前半部分比较一下 完全相同为true
+     */
+    public boolean isPalindrome(MonoNode node){
+        int length=0;
+        int len=0;
+        MonoNode computLengthNode=node;
+        MonoNode localNode=node;
+        while(computLengthNode!=null){
+            length++;
+            computLengthNode=computLengthNode.next;
+        }
+        if(length%2==0){
+            System.out.println("偶数，转换的节点从length除2再加1");
+
+            while(len!=(length/2)+1){
+                localNode=localNode.next;
+                len++;
+            }
+            MonoNode revNode=localNode;
+            MonoNode resultNode=reverseList(revNode);
+            int contrastLen=0;
+            while(contrastLen!=(length/2)+1){
+                if(node.value!=resultNode.value){
+                    return false;
+                }
+                node=node.next;
+                resultNode=resultNode.next;
+                contrastLen++;
+            }
+            return  true;
+        }else{
+            System.out.println("单数,length+1再除2");
+            while(len!=(length+1)/2-1){
+                localNode=localNode.next;
+                len++;
+            }
+
+            MonoNode revNode=localNode;
+            MonoNode resultNode=reverseList(revNode);
+            int contrastLen=0;
+
+            while(resultNode!=null && node!=null){
+
+                if(node.value!=resultNode.value){
+                    return false;
+                }
+                node=node.next;
+                resultNode=resultNode.next;
+                contrastLen++;
+            }
+            System.out.println(contrastLen);
+            return  true;
+        }
+
+    }
+
+    /**
+     * 判断彗回文结构套路2
+     * @param args
+     */
+    public boolean isPalindrome2(MonoNode head){
+        if(head == null || head.next == null) return true;
+
+        MonoNode node1 = head;
+        MonoNode node2 = head;
+        //查找中间节点
+        while(node2.next != null && node2.next.next != null){
+            node1 = node1.next;
+            node2 = node2.next.next;
+        }
+        node2 = node1.next;
+        node1.next= null;
+        MonoNode node3=null;
+        while(node2!=null){
+            node3=node2.next;
+            node2.next=node1;
+            node1=node2;
+            node2=node3;
+        }
+        node3=node1;
+        node2=head;
+        boolean res =true;
+        while(node1!=null && node2!=null){
+            if (node1.value!= node2.value){
+                res=false;
+                break;
+            }
+            node1=node1.next;
+            node2=node2.next;
+        }
+        node1=node3.next;
+        node3.next=null;
+        while(node1!=null){
+            node2=node1.next;
+            node1.next=node3;
+            node3=node1;
+            node1=node2;
+        }
+        return res;
+    }
 
     public static void main(String args[]){
-        LinkedQuestion list=new LinkedQuestion();
+          LinkedQuestion list=new LinkedQuestion();
         MonoNode node= list.new MonoNode(1);
         node.next=list.new MonoNode(2);
         node.next.next=list.new MonoNode(3);
-        node.next.next.next=node;
-        MonoNode nodes= list.joesphusProblem(node,3);
+        node.next.next.next=list.new MonoNode(2);
+        node.next.next.next.next=list.new MonoNode(1);
+//        node.next.next.next=node;
+//        MonoNode nodes= list.joesphusProblem(node,3);
 
-        System.out.print(nodes.value);
+//        System.out.print(nodes.value);
+
+        boolean boo=list.isPalindrome(node);
+        System.out.println(boo);
 
 
     }
