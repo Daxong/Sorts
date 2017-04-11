@@ -218,7 +218,7 @@ public class LinkedQuestion {
     }
 
     /**
-     * 判断彗回文结构套路2
+     * 判断回文结构 8套路2
      * @param args
      */
     public boolean isPalindrome2(MonoNode head){
@@ -268,13 +268,16 @@ public class LinkedQuestion {
         node.next=list.new MonoNode(2);
         node.next.next=list.new MonoNode(3);
         node.next.next.next=list.new MonoNode(2);
-        node.next.next.next.next=list.new MonoNode(1);
+        node.next.next.next.next=list.new MonoNode();
+        node.next.next.next.next.next=list.new MonoNode(3);
+        node.next.next.next.next.next.next=list.new MonoNode(2);
+        node.next.next.next.next.next.next.next=list.new MonoNode(1);
 //        node.next.next.next=node;
 //        MonoNode nodes= list.joesphusProblem(node,3);
 
 //        System.out.print(nodes.value);
 
-        boolean boo=list.isPalindrome(node);
+        boolean boo=list.isPalindrome2(node);
         System.out.println(boo);
 
 
