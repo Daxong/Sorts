@@ -1,10 +1,12 @@
 import java.util.Stack;
 import java.util.StringTokenizer;
 import java.io.*;
+
 /**
  * Created by ilove on 13/04/2017.
  */
-    //检查HTML文档的括号匹配
+
+//检查HTML文档的括号匹配
 public class HTML {
     //嵌套类，存放HTML标志
     public static class Tag {
@@ -28,7 +30,7 @@ public class HTML {
             System.out.print("\t│");
     }
 
-//检查每个起始标志是否都对应于一个结束标志
+    //检查每个起始标志是否都对应于一个结束标志
     public boolean isHTMLMatched(Tag[] tag) {
         int level = 0;//标志的层次
         Stack S = new Stack();//存放标志的栈
@@ -50,8 +52,8 @@ public class HTML {
 
     //至此，已扫描完整个文档
 
-
-    if (S.isEmpty())//若此时栈为空，则
+    if (S.isEmpty())
+        //若此时栈为空，则
         return true;//报告"匹配"
     else//否则
         return false;//报告"不匹配"
@@ -76,22 +78,24 @@ public class HTML {
                     inTag = false;//将当前状态设为"处于标志之外"
                 else if (inTag) { //若正在扫描一个标志
                     if ( (token.length() == 0) || (token.charAt(0) != '/') ) //若是起始标志，则
-
                         tag[count++] = new Tag(token, true);//加入之
                     else
                         tag[count++] = new Tag(token.substring(1), false); //加入一个结束标志(跳过首字符'/')
             }//请注意:所有非标志部分均被忽略了
         }//while
     }//while
+
     return tag; //返回标志数组
 }
 
-public static void main(String[] args) throws IOException {
-    BufferedReader stdr = new BufferedReader(new InputStreamReader(System.in));//标准 输入
-    HTML tagChecker = new HTML();
-    if (tagChecker.isHTMLMatched(tagChecker.parseHTML(stdr)))
-        System.out.println("该文件符合HTML的标志匹配");
-    else
-        System.out.println("该文件不符合HTML的标志匹配"); }
+    public static void main(String[] args) throws IOException {
+
+        BufferedReader stdr = new BufferedReader(new InputStreamReader(System.in));//标准 输入
+        HTML tagChecker = new HTML();
+        if (tagChecker.isHTMLMatched(tagChecker.parseHTML(stdr)))
+            System.out.println("该文件符合HTML的标志匹配");
+        else
+            System.out.println("该文件不符合HTML的标志匹配");
+    }
 
 }
