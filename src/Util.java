@@ -7,10 +7,18 @@ public class Util {
      * @param number
      * @param jinzhi
      */
-    public static void BaseConsversion(int number,int jinzhi){
+    public static void baseConsversion(int number,int jinzhi){
         String res="";
+        String[] overten={"a","b","c","d","e","f","g","h","j","k","l","i"};
         while(number != 0){
-            res += ""+number % jinzhi;
+            int mod= number % jinzhi;
+            if(mod-9>0){
+                res += overten[mod-10];
+
+            }else{
+                res += ""+number % jinzhi;
+            }
+
             number = number / jinzhi;
         }
         String  s="";
@@ -20,6 +28,6 @@ public class Util {
         System.out.println(s);
     }
     public static void main(String[] args){
-        BaseConsversion(101,2);
+        baseConsversion(255,11);
     }
 }
