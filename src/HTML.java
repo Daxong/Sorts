@@ -90,7 +90,8 @@ public static void main(String[] args) throws IOException {
     BufferedReader stdr = new BufferedReader(new InputStreamReader(System.in));//标准 输入
     HTML tagChecker = new HTML();
     if (tagChecker.isHTMLMatched(tagChecker.parseHTML(stdr)))
-        System.out.println("该文件符合HTML的标志匹配"); else
+        System.out.println("该文件符合HTML的标志匹配");
+    else
         System.out.println("该文件不符合HTML的标志匹配"); }
 
 }
